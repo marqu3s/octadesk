@@ -1,0 +1,11 @@
+{
+    "name": "marqu3s/octadesk",
+    "description": "Octadesk API wrapper",
+    "keywords": ["octadesk", "ticket", "support", "help"],
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.6.0"
+    }
+}
