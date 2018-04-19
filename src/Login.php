@@ -11,7 +11,7 @@ namespace marqu3s\octadesk;
 
 class Login extends Octadesk
 {
-    public function loginApiToken($apiToken, $userEmail)
+    public function loginApiToken($apiToken, $userEmail, $returnTokenOnly = true)
     {
         $this->setEndpoint('login/apiToken');
         $this->isPost();
@@ -19,7 +19,14 @@ class Login extends Octadesk
         $this->headers[] = 'apiToken: ' . $apiToken;
         $this->headers[] = 'username: ' . $userEmail;
 
-        return $this->queryApi();
+        $response = $this->queryApi();
+
+        if ($returnTokenOnly) {
+            $body = json_decode($response['body']);
+            return $body->token;
+        } else {
+            return $response;
+        }
     }
 
     public function validateSubDomain($subdomain)
