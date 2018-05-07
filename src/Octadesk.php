@@ -16,45 +16,59 @@ abstract class Octadesk
 
     public $curl;
     public $token;
+    public $endpoint;
+    public $verb = 'GET';
     public $responseType = 'application/json';
     public $headers = [];
     public $postFields = [];
 
     public function __construct($token = null)
     {
-        $this->curl = curl_init();
-
         $this->token = $token;
 
         if (!empty($this->token)) {
             $this->headers[] = 'Authorization: Bearer ' . $this->token;
         }
-
-        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($this->curl, CURLOPT_HEADER, 1);
     }
 
     public function setEndpoint($endpoint)
     {
-        curl_setopt($this->curl, CURLOPT_URL, self::APIURL . $endpoint);
+        $this->endpoint = $endpoint;
+    }
+
+    public function isGet()
+    {
+        $this->verb = 'GET';
     }
 
     public function isPost()
     {
-        curl_setopt($this->curl, CURLOPT_POST, 1);
+        $this->verb = 'POST';
     }
 
     public function isPut()
     {
-        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PUT");
+        $this->verb = 'PUT';
     }
 
     public function queryApi()
     {
+        $this->curl = curl_init();
+
         # Add the headers
         $this->headers[] = 'Accept: ' . $this->responseType;
         $this->headers[] = 'Content-Type: ' . $this->responseType;
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, $this->headers);
+
+        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($this->curl, CURLOPT_HEADER, 1);
+        curl_setopt($this->curl, CURLOPT_URL, self::APIURL . $this->endpoint);
+
+        if ($this->verb === 'POST') {
+            curl_setopt($this->curl, CURLOPT_POST, 1);
+        } elseif ($this->verb === 'PUT') {
+            curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PUT");
+        }
 
         # Post fields
         if (count($this->postFields)) {

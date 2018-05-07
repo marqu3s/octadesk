@@ -44,8 +44,9 @@ class Persons extends Octadesk
      *
      * @see https://api.octadesk.services/docs/#/person/getPersonByEmail
      */
-    public function getPersonByEmail($email)
+    public function getByEmail($email)
     {
+        $this->isGet();
         $this->setEndpoint('?email=' . htmlentities($email));
 
         return $this->queryApi();
@@ -65,10 +66,10 @@ class Persons extends Octadesk
      *
      * @see https://api.octadesk.services/docs/#/person/createPerson
      */
-    public function createPerson($email, $name, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $role = self::ROLE_TYPE_CLIENT)
+    public function create($email, $name, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $role = self::ROLE_TYPE_CLIENT)
     {
-        $this->setEndpoint('');
         $this->isPost();
+        $this->setEndpoint('');
 
         $this->postFields['type'] = $type;
         $this->postFields['permissionView'] = $permissionView;
@@ -95,10 +96,10 @@ class Persons extends Octadesk
      *
      * @see https://api.octadesk.services/docs/#/person/updatePerson
      */
-    public function updatePerson($uuid, $email = null, $name = null, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $role = self::ROLE_TYPE_CLIENT)
+    public function update($uuid, $email = null, $name = null, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $role = self::ROLE_TYPE_CLIENT)
     {
-        $this->setEndpoint($uuid);
         $this->isPut();
+        $this->setEndpoint($uuid);
 
         $this->postFields['type'] = $type;
         $this->postFields['permissionView'] = $permissionView;
@@ -106,6 +107,22 @@ class Persons extends Octadesk
         $this->postFields['roleType'] = $role;
         $this->postFields['email'] = $email;
         $this->postFields['name'] = $name;
+        $this->postFields['isEnabled'] = true;
+
+        return $this->queryApi();
+    }
+
+    /**
+     * Disable a person.
+     *
+     * @param string  $uuid
+     */
+    public function disable($uuid)
+    {
+        $this->isPut();
+        $this->setEndpoint($uuid);
+
+        $this->postFields['isEnabled'] = false;
 
         return $this->queryApi();
     }
