@@ -22,13 +22,10 @@ abstract class Octadesk
     public $headers = [];
     public $postFields = [];
 
-    public function __construct($token = null)
+    public function __construct($token = null, $responseType = 'application/json')
     {
         $this->token = $token;
-
-        if (!empty($this->token)) {
-            $this->headers[] = 'Authorization: Bearer ' . $this->token;
-        }
+        $this->responseType = $responseType;
     }
 
     public function setEndpoint($endpoint)
@@ -56,6 +53,9 @@ abstract class Octadesk
         $this->curl = curl_init();
 
         # Add the headers
+        if (!empty($this->token)) {
+            $this->headers[] = 'Authorization: Bearer ' . $this->token;
+        }
         $this->headers[] = 'Accept: ' . $this->responseType;
         $this->headers[] = 'Content-Type: ' . $this->responseType;
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, $this->headers);
@@ -82,6 +82,7 @@ abstract class Octadesk
         $body = substr($response, $headerSize);
 
         curl_close($this->curl);
+        $this->headers = [];
 
         return [
             'httpResponseCode' => $httpResponseCode,

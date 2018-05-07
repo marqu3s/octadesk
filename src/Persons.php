@@ -66,7 +66,7 @@ class Persons extends Octadesk
      *
      * @see https://api.octadesk.services/docs/#/person/createPerson
      */
-    public function create($email, $name, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $role = self::ROLE_TYPE_CLIENT)
+    public function create($email, $name, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $role = self::ROLE_TYPE_CLIENT, $customFields = [])
     {
         $this->isPost();
         $this->setEndpoint('');
@@ -77,6 +77,10 @@ class Persons extends Octadesk
         $this->postFields['roleType'] = $role;
         $this->postFields['email'] = $email;
         $this->postFields['name'] = $name;
+
+        if (count($customFields)) {
+            $this->postFields['customField'] = $customFields;
+        }
 
         return $this->queryApi();
     }
@@ -96,7 +100,7 @@ class Persons extends Octadesk
      *
      * @see https://api.octadesk.services/docs/#/person/updatePerson
      */
-    public function update($uuid, $email = null, $name = null, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $role = self::ROLE_TYPE_CLIENT)
+    public function update($uuid, $email = null, $name = null, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $role = self::ROLE_TYPE_CLIENT, $customFields = [])
     {
         $this->isPut();
         $this->setEndpoint($uuid);
@@ -108,6 +112,10 @@ class Persons extends Octadesk
         $this->postFields['email'] = $email;
         $this->postFields['name'] = $name;
         $this->postFields['isEnabled'] = true;
+
+        if (count($customFields)) {
+            $this->postFields['customField'] = $customFields;
+        }
 
         return $this->queryApi();
     }
