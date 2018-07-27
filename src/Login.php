@@ -8,9 +8,19 @@
 
 namespace marqu3s\octadesk;
 
-
+/**
+ * Class Login
+ * @package marqu3s\octadesk
+ */
 class Login extends Octadesk
 {
+    /**
+     * @param string $apiToken
+     * @param string $userEmail
+     * @param bool $returnTokenOnly
+     *
+     * @return array
+     */
     public function loginApiToken($apiToken, $userEmail, $returnTokenOnly = true)
     {
         $this->setEndpoint('login/apiToken');
@@ -21,7 +31,7 @@ class Login extends Octadesk
 
         $response = $this->queryApi();
         if ($response['httpResponseCode'] != 200) {
-            \yii\helpers\VarDumper::dump($response, 10, true); die;
+            \yii\helpers\VarDumper::dump($response); die;
         }
 
         if ($returnTokenOnly) {

@@ -8,7 +8,10 @@
 
 namespace marqu3s\octadesk;
 
-
+/**
+ * Class Persons
+ * @package marqu3s\octadesk
+ */
 class Persons extends Octadesk
 {
     const PERSON_TYPE_NONE = 0;
@@ -25,6 +28,11 @@ class Persons extends Octadesk
     const PERMISSION_TYPE_NONE = 0;
     const PERMISSION_TYPE_ALL = 1;
     const PERMISSION_TYPE_GROUP = 2;
+    const PERMISSION_TYPE_GROUP_PLUS_INTERACTED = 3;
+
+    const PARTICIPANT_PERMISSION_NONE = 0;
+    const PARTICIPANT_PERMISSION_VIEW_ONLY = 1;
+    const PARTICIPANT_PERMISSION_VIEW_EDIT = 2;
 
     const ROLE_TYPE_NONE = 0;
     const ROLE_TYPE_OWNER = 1;
@@ -60,13 +68,14 @@ class Persons extends Octadesk
      * @param integer $type
      * @param integer $permissionView
      * @param integer $permissionType
+     * @param integer $participantPermission
      * @param integer $role
      *
      * @return array
      *
      * @see https://api.octadesk.services/docs/#/person/createPerson
      */
-    public function create($email, $name, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $role = self::ROLE_TYPE_CLIENT, $customFields = [])
+    public function create($email, $name, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $participantPermission = self::PARTICIPANT_PERMISSION_NONE, $role = self::ROLE_TYPE_CLIENT, $customFields = [])
     {
         $this->isPost();
         $this->setEndpoint('');
@@ -74,6 +83,7 @@ class Persons extends Octadesk
         $this->postFields['type'] = $type;
         $this->postFields['permissionView'] = $permissionView;
         $this->postFields['permissionType'] = $permissionType;
+        $this->postFields['participantPermission'] = $participantPermission;
         $this->postFields['roleType'] = $role;
         $this->postFields['email'] = $email;
         $this->postFields['name'] = $name;
@@ -94,13 +104,15 @@ class Persons extends Octadesk
      * @param integer $type
      * @param integer $permissionView
      * @param integer $permissionType
+     * @param integer $participantPermission
      * @param integer $role
+     * @param array $customFields
      *
      * @return array
      *
      * @see https://api.octadesk.services/docs/#/person/updatePerson
      */
-    public function update($uuid, $email = null, $name = null, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $role = self::ROLE_TYPE_CLIENT, $customFields = [])
+    public function update($uuid, $email = null, $name = null, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $participantPermission = self::PARTICIPANT_PERMISSION_NONE, $role = self::ROLE_TYPE_CLIENT, $customFields = [])
     {
         $this->isPut();
         $this->setEndpoint($uuid);
@@ -108,6 +120,7 @@ class Persons extends Octadesk
         $this->postFields['type'] = $type;
         $this->postFields['permissionView'] = $permissionView;
         $this->postFields['permissionType'] = $permissionType;
+        $this->postFields['participantPermission'] = $participantPermission;
         $this->postFields['roleType'] = $role;
         $this->postFields['email'] = $email;
         $this->postFields['name'] = $name;
@@ -116,6 +129,10 @@ class Persons extends Octadesk
         if (count($customFields)) {
             $this->postFields['customField'] = $customFields;
         }
+
+        /*if (count($idGroups)) {
+            $this->postFields['idGroups'] = $idGroups;
+        }*/
 
         return $this->queryApi();
     }
