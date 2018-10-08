@@ -31,13 +31,20 @@ class Tickets extends Octadesk
 
 
     /**
+     * @param string|integer|null $number
      * @param string|null $requesterUuid
      * @param string|array|null $status
+     * @param string|null $sortBy
+     * @param string|null $sortDirection
      *
      * @return array
      */
-    public function searchTickets($requesterUuid = null, $status = null, $sortBy = null, $sortDirection = null)
+    public function searchTickets($number = null, $requesterUuid = null, $status = null, $sortBy = null, $sortDirection = null)
     {
+        if (!empty($number)) {
+            $path[] = "number=$number";
+        }
+
         if (!empty($requesterUuid)) {
             $path[] = "idRequester=$requesterUuid";
         }
@@ -94,5 +101,19 @@ class Tickets extends Octadesk
         $endpoint = 'tickets/' . $endpoint;
 
         parent::setEndpoint($endpoint);
+    }
+
+    /**
+     * Retorna todas as interações de um ticket.
+     *
+     * @param integer $ticketNumber
+     *
+     * @return array
+     */
+    public function getInteractions($ticketNumber)
+    {
+        $this->setEndpoint("$ticketNumber/interactions");
+
+        return $this->queryApi();
     }
 }
