@@ -36,10 +36,12 @@ class Tickets extends Octadesk
      * @param string|array|null $status
      * @param string|null $sortBy
      * @param string|null $sortDirection
+     * @param integer $limit
+     * @param string|null $outputDataSet
      *
      * @return array
      */
-    public function searchTickets($number = null, $requesterUuid = null, $status = null, $sortBy = null, $sortDirection = null)
+    public function searchTickets($number = null, $requesterUuid = null, $status = null, $sortBy = null, $sortDirection = null, $limit = 20, $outputDataSet = null)
     {
         if (!empty($number)) {
             $path[] = "number=$number";
@@ -63,6 +65,12 @@ class Tickets extends Octadesk
         if (!empty($sortDirection)) {
             $path[] = "sortDirection=$sortDirection";
         }
+
+        if (!empty($outputDataSet)) {
+            $path[] = "outputDataSet=$outputDataSet";
+        }
+
+        $path[] = "take=$limit";
 
         if (count($path)) {
             $path = '?' . implode('&', $path);
