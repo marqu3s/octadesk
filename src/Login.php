@@ -30,9 +30,9 @@ class Login extends Octadesk
         $this->headers[] = 'username: ' . $userEmail;
 
         $response = $this->queryApi();
-        if ($response['httpResponseCode'] != 200) {
+        /*if ($response['httpResponseCode'] != 200) {
             \yii\helpers\VarDumper::dump($response); die;
-        }
+        }*/
 
         if ($returnTokenOnly) {
             $body = json_decode($response['body']);
