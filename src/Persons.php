@@ -62,6 +62,43 @@ class Persons extends Octadesk
     }
 
     /**
+     * Return agents.
+     *
+     * @param string $keyword
+     * @param int $page
+     * @param bool $detailed
+     *
+     * @return array
+     */
+    public function getAgents($keyword = null, $page = 1, $detailed = false)
+    {
+        $this->isGet();
+        $this->setEndpoint("agents?keyword=$keyword&page=$page&detailed=$detailed");
+
+        return $this->queryApi();
+    }
+
+    /**
+     * Updates an agent avatar URL.
+     *
+     * @param string $uuid
+     * @param string $email
+     * @param string $url
+     *
+     * @return array
+     */
+    public function updateAvatarUrl($uuid, $email, $url)
+    {
+        $this->isPut();
+        $this->setEndpoint($uuid);
+
+        $this->postFields['email'] = $email;
+        $this->postFields['thumbUrl'] = $url;
+
+        return $this->queryApi();
+    }
+
+    /**
      * Creates a person.
      * The the $idGroups if null, all the groups will be removed from the person.
      * It's mandatory to always send the group IDs to keep the existing person's groups.
