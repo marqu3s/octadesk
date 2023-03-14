@@ -21,17 +21,19 @@ class Login extends Octadesk
      *
      * @return array
      */
-    public function loginApiToken($apiToken, $userEmail, $returnTokenOnly = true)
+    public function loginApiToken($subdomain, $apiToken, $userEmail, $returnTokenOnly = true)
     {
         $this->setEndpoint('login/apiToken');
         $this->isPost();
 
+        $this->headers[] = 'subdomain: ' . $subdomain;
         $this->headers[] = 'apiToken: ' . $apiToken;
         $this->headers[] = 'username: ' . $userEmail;
 
         $response = $this->queryApi();
         /*if ($response['httpResponseCode'] != 200) {
-            \yii\helpers\VarDumper::dump($response); die;
+            \yii\helpers\VarDumper::dump($response);
+            die();
         }*/
 
         if ($returnTokenOnly) {

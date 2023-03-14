@@ -8,10 +8,10 @@
 
 namespace marqu3s\octadesk;
 
-
 abstract class Octadesk
 {
-    const APIURL = 'https://api.octadesk.services/';
+    // const APIURL = 'https://api.octadesk.services/';
+    const APIURL = 'https://api-docs.octadesk.services/';
     const TOKEN_EXPIRATION_MINUTES = 3;
 
     public $curl;
@@ -67,7 +67,7 @@ abstract class Octadesk
         if ($this->verb === 'POST') {
             curl_setopt($this->curl, CURLOPT_POST, 1);
         } elseif ($this->verb === 'PUT') {
-            curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PUT");
+            curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'PUT');
         }
 
         # Post fields
@@ -87,7 +87,7 @@ abstract class Octadesk
         return [
             'httpResponseCode' => $httpResponseCode,
             'header' => $header,
-            'body' => $body
+            'body' => $body,
         ];
     }
 }
