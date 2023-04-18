@@ -10,8 +10,8 @@ namespace marqu3s\octadesk;
 
 abstract class Octadesk
 {
-    // const APIURL = 'https://api.octadesk.services/';
-    const APIURL = 'https://api-docs.octadesk.services/';
+    const APIURL = 'https://api.octadesk.services/';
+    // const APIURL = 'https://api-docs.octadesk.services/';
     const TOKEN_EXPIRATION_MINUTES = 3;
 
     public $curl;
