@@ -117,7 +117,7 @@ class Persons extends Octadesk
      *
      * @see https://api.octadesk.services/docs/#/person/createPerson
      */
-    public function create($email, $name, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $participantPermission = self::PARTICIPANT_PERMISSION_NONE, $role = self::ROLE_TYPE_CLIENT, $idGroups = null, $customFields = [])
+    public function create($email, $name, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $participantPermission = self::PARTICIPANT_PERMISSION_NONE, $role = self::ROLE_TYPE_CLIENT, $idGroups = [], $customFields = [])
     {
         $this->isPost();
         $this->setEndpoint('');
@@ -161,7 +161,7 @@ class Persons extends Octadesk
      *
      * @see https://api.octadesk.services/docs/#/person/updatePerson
      */
-    public function update($uuid, $email = null, $name = null, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $participantPermission = self::PARTICIPANT_PERMISSION_NONE, $role = self::ROLE_TYPE_CLIENT, $idGroups = null, $customFields = [])
+    public function update($uuid, $email = null, $name = null, $type = self::PERSON_TYPE_CUSTOMER, $permissionView = self::PERMISSION_VIEW_MY_REQUESTS, $permissionType = self::PERMISSION_TYPE_GROUP, $participantPermission = self::PARTICIPANT_PERMISSION_NONE, $role = self::ROLE_TYPE_CLIENT, $idGroups = [], $customFields = [])
     {
         $this->isPut();
         $this->setEndpoint($uuid);
