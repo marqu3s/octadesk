@@ -29,20 +29,29 @@ class Tickets extends Octadesk
     const TICKET_SORTDIRECTION_ASC = 'asc';
     const TICKET_SORTDIRECTION_DESC = 'desc';
 
-
     /**
      * @param string|integer|null $number
      * @param string|null $requesterUuid
      * @param string|array|null $status
      * @param string|null $sortBy
      * @param string|null $sortDirection
-     * @param integer $limit
+     * @param integer $take
      * @param string|null $outputDataSet
+     * @param array $otherFilters
      *
      * @return array
+     * @see https://api-docs.octadesk.services/docs/#/Search_Tickets/searchTickets
      */
-    public function searchTickets($number = null, $requesterUuid = null, $status = null, $sortBy = null, $sortDirection = null, $limit = 20, $outputDataSet = null)
-    {
+    public function searchTickets(
+        $number = null,
+        $requesterUuid = null,
+        $status = null,
+        $sortBy = null,
+        $sortDirection = null,
+        $take = 20,
+        $outputDataSet = null,
+        $otherFilters = []
+    ) {
         if (!empty($number)) {
             $path[] = "number=$number";
         }
@@ -70,7 +79,13 @@ class Tickets extends Octadesk
             $path[] = "outputDataSet=$outputDataSet";
         }
 
-        $path[] = "take=$limit";
+        $path[] = "take=$take";
+
+        if (is_array($otherFilters)) {
+            foreach ($otherFilters as $key => $value) {
+                $path[] = "$key=$value";
+            }
+        }
 
         if (count($path)) {
             $path = '?' . implode('&', $path);
