@@ -1,3 +1,9 @@
+PLEASE USE THIS INSTEAD:
+
+https://github.com/marqu3s/octadesk-api
+
+
+
 Octadesk API Wrapper
 ====================
 
